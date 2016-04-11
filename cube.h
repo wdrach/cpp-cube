@@ -48,18 +48,19 @@
  * solve a cube using the PIECES instead of the colors)
  */
 
-
 class cube {
   //the user should not be able to directly influence the state
   char state[54];
+
   public:
     //constructor
-    cube(int start_state[54]);
-    int* getState();
+    cube(int start_state[54] = NULL);
+    //int* getState();
+    void printCube();
 
     //R&L
-    bool R();
-    bool r();
+    void R();
+/*  bool r();
     bool Ri();
     bool ri();
     bool L();
@@ -101,5 +102,7 @@ class cube {
     bool X();
     bool Xi();
     bool Z();
-    bool Zi();
+    bool Zi();*/
+
+    //helpers
 };
