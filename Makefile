@@ -6,10 +6,13 @@ LFLAGS = -g -Wall -Wextra -I/usr/local/lib -L/usr/local/lib
 
 all: test
 
-test: cube.o test.cpp
+test: cube.o face.o test.cpp
 	$(CC) $(LFLAGS) $^ -o $@
 
-cube.o: cube.cpp cube.h
+cube.o: cube.cpp face.o
+	$(CC) $(CFLAGS) $^
+
+face.o: face.cpp
 	$(CC) $(CFLAGS) $<
 
 clean:

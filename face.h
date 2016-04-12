@@ -1,3 +1,4 @@
+#include <stddef.h>
 
 //face contains a main state array as well
 //as a set of rotated arrays. Why? because

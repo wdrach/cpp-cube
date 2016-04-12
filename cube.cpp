@@ -3,76 +3,102 @@
 
 using namespace std;
 
-int solved[54] = {
-  'a', 'A', 'b', 'D', 'A', 'B', 'd', 'C', 'c',
-  'e', 'E', 'f', 'H', 'B', 'F', 'h', 'G', 'g',
-  'i', 'I', 'j', 'L', 'C', 'J', 'l', 'K', 'k',
-  'm', 'M', 'n', 'P', 'D', 'N', 'p', 'O', 'o',
-  'q', 'Q', 'r', 'T', 'E', 'R', 't', 'S', 's',
-  'u', 'U', 'v', 'X', 'F', 'V', 'x', 'W', 'w'
-};
-
-cube::cube(int start_state[54]) {
+cube::cube(face start_state[6]) {
   int i;
-  if (start_state == NULL) {
-    for (i=0; i<54; i++) state[i] = solved[i];
+  if (start_state != NULL) {
+    for (i=0; i<6; i++) state[i] = start_state[i];
   }
-  else {
-    for (i=0; i<54; i++) state[i] = start_state[i];
-  }
+
   return;
+}
+
+void cube::printColor(char c) {
+  //lowercase
+  if (c > 'Z') c -= 'z' - 'Z';
+  if ((c < 'E' && c >= 'A') || c == '0') cout << "\x1b[37m" << "[" << c << "]";
+  else if ((c < 'I' && c >= 'A') || c == '1') cout << "\x1b[35m" << "[" << c << "]";
+  else if ((c < 'M' && c >= 'A') || c == '2') cout << "\x1b[32m" << "[" << c << "]";
+  else if ((c < 'Q' && c >= 'A') || c == '3') cout << "\x1b[31m" << "[" << c << "]";
+  else if ((c < 'U' && c >= 'A') || c == '4') cout << "\x1b[34m" << "[" << c << "]";
+  else cout << "\x1b[33m" << "[" << c << "]";
 }
 
 void cube::printCube() {
-  int i, j;
-  for (i=0; i<6*3; i++) {
-    for (j=0; j<3; j++) {
-      cout << "|" << state[3*i + j] << "|";
+  //want to print like this
+  //    4C
+  //1B? 0A 3D?
+  //    2A
+  //    5A
+  //
+  //1B and 3D might be 1D and 3B
+  int i;
+  int j;
+  for (i=0; i<6; i++) {
+    for (j=0; j<9; j++) {
+      printColor(*(state[i].AState[j]));
+      if (j%3 == 2) cout << endl;
     }
     cout << endl;
-    if (i%3 == 2) cout << endl;
   }
-  cout << endl;
-}
-
-void cube::R() {
-  char buffer[3] = {state[2], state[5], state[8]};
-
-  //move F to U
-  state[2] = state[20];
-  state[5] = state[23];
-  state[8] = state[26];
-
-  //move D to F
-  state[20] = state[47];
-  state[23] = state[50];
-  state[26] = state[53];
-
-  //move B to D
-  state[47] = state[42];
-  state[50] = state[39];
-  state[53] = state[36];
-
-  //move U to B
-  state[42] = buffer[0];
-  state[39] = buffer[1];
-  state[36] = buffer[2];
-
-  //rotate R
-  //corners
-  buffer[0] = state[27];
-  state[27] = state[33];
-  state[33] = state[35];
-  state[35] = state[29];
-  state[29] = buffer[0];
-  //edges
-  buffer[0] = state[28];
-  state[28] = state[30];
-  state[30] = state[34];
-  state[34] = state[32];
-  state[32] = buffer[0];
-
   return;
 }
 
-//etc
+void cube::vSlice(char layer) {
+  int i;
+  char buffer[9];
+
+  //drop U into the buffer
+  for (i=layer; i<9; i+=3) buffer[i] = *(state[0].AState[i]);
+
+  //move F to U
+  for (i=layer; i<9; i+=3) *(state[0].AState[i]) = *(state[2].AState[i]);
+
+  //move D to F
+  for (i=layer; i<9; i+=3) *(state[2].AState[i]) = *(state[5].AState[i]);
+
+  //move B to D
+  for (i=layer; i<9; i+=3) *(state[5].CState[i]) = *(state[4].AState[i]);
+
+  //move F to B
+  for (i=layer; i<9; i+=3) *(state[4].CState[i]) = buffer[i];
+
+  char rBuffer[9];
+  switch (layer) {
+    case 0:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[1].BState[i]);
+      for (i=0; i<9; i++) *(state[1].AState[i]) = rBuffer[i];
+      break;
+    case 2:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[3].BState[i]);
+      for (i=0; i<9; i++) *(state[3].AState[i]) = rBuffer[i];
+      break;
+  }
+}
+
+void cube::R() {
+  vSlice(2);
+  return;
+}
+
+void cube::r() {
+  vSlice(2);
+  vSlice(1);
+  return;
+}
+
+void cube::L() {
+  vSlice(0);
+  return;
+}
+
+void cube::l() {
+  vSlice(0);
+  vSlice(1);
+  return;
+}
+
+void cube::Mi() {
+  vSlice(1);
+  return;
+}
+
