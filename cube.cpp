@@ -42,7 +42,7 @@ void cube::printCube() {
   cout << endl;
 
   for (i=0; i<3; i++) {
-    for (j=0; j<3; j++) printColor(*(state[1].BState[j + 3*i]));
+    for (j=0; j<3; j++) printColor(*(state[1].DState[j + 3*i]));
     cout << " ";
     for (j=0; j<3; j++) printColor(*(state[0].AState[j + 3*i]));
     cout << " ";
