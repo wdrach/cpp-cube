@@ -13,7 +13,6 @@ int solved[54] = {
 };
 
 face::face(int start_state[9], char face) {
-  cout << face << endl;
   int i;
 
   //set the initial state

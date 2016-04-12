@@ -33,13 +33,37 @@ void cube::printCube() {
   //1B and 3D might be 1D and 3B
   int i;
   int j;
-  for (i=0; i<6; i++) {
-    for (j=0; j<9; j++) {
-      printColor(*(state[i].AState[j]));
-      if (j%3 == 2) cout << endl;
-    }
+
+  cout << "          ";
+  for (j=0; j<9; j++) {
+    printColor(*(state[4].CState[j]));
+    if (j%3 == 2) cout << endl << "          ";
+  }
+  cout << endl;
+
+  for (i=0; i<3; i++) {
+    for (j=0; j<3; j++) printColor(*(state[1].BState[j + 3*i]));
+    cout << " ";
+    for (j=0; j<3; j++) printColor(*(state[0].AState[j + 3*i]));
+    cout << " ";
+    for (j=0; j<3; j++) printColor(*(state[3].DState[j + 3*i]));
     cout << endl;
   }
+
+  cout << endl << "          ";
+  for (j=0; j<9; j++) {
+    printColor(*(state[2].AState[j]));
+    if (j%3 == 2) cout << endl << "          ";
+  }
+
+  cout << endl << "          ";
+  for (j=0; j<9; j++) {
+    printColor(*(state[5].AState[j]));
+    if (j%3 == 2) cout << endl << "          ";
+  }
+
+  cout << "\x1b[37m" << endl;
+
   return;
 }
 
@@ -57,7 +81,7 @@ void cube::vSlice(char layer) {
   for (i=layer; i<9; i+=3) *(state[2].AState[i]) = *(state[5].AState[i]);
 
   //move B to D
-  for (i=layer; i<9; i+=3) *(state[5].CState[i]) = *(state[4].AState[i]);
+  for (i=layer; i<9; i+=3) *(state[5].AState[i]) = *(state[4].CState[i]);
 
   //move F to B
   for (i=layer; i<9; i+=3) *(state[4].CState[i]) = buffer[i];
