@@ -55,6 +55,10 @@ class cube {
   //internal helpers
   void printColor(char c);
 
+  //slices, which are helpers for moves
+  void vSlice(char layer);
+  void ivSlice(char layer);
+
   public:
     //constructor
     cube(face start_state[6] = NULL);
@@ -62,15 +66,14 @@ class cube {
     void printCube();
 
     //R&L
-    void vSlice(char layer);
     void R();
     void r();
-    //void Ri();
-    //void ri();
+    void Ri();
+    void ri();
     void L();
     void l();
-    //void Li();
-    //void li();
+    void Li();
+    void li();
     
     //U&D
 /*  void U();
@@ -93,7 +96,7 @@ class cube {
     void bi();*/
 
     //M slices
-    //void M();
+    void M();
     void Mi();
     //void E();
     //void Ei();

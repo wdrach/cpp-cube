@@ -24,13 +24,7 @@ void cube::printColor(char c) {
 }
 
 void cube::printCube() {
-  //want to print like this
-  //    4C
-  //1B? 0A 3D?
-  //    2A
-  //    5A
-  //
-  //1B and 3D might be 1D and 3B
+  //sorry this is confusing AF, but it works
   int i;
   int j;
 
@@ -110,12 +104,12 @@ void cube::r() {
   return;
 }
 
-void cube::L() {
+void cube::Li() {
   vSlice(0);
   return;
 }
 
-void cube::l() {
+void cube::li() {
   vSlice(0);
   vSlice(1);
   return;
@@ -126,3 +120,62 @@ void cube::Mi() {
   return;
 }
 
+void cube::ivSlice(char layer) {
+  int i;
+  char buffer[9];
+
+  //drop U into the buffer
+  for (i=layer; i<9; i+=3) buffer[i] = *(state[0].AState[i]);
+
+  //move B to U
+  for (i=layer; i<9; i+=3) *(state[0].AState[i]) = *(state[4].CState[i]);
+
+  //move D to B
+  for (i=layer; i<9; i+=3) *(state[4].CState[i]) = *(state[5].AState[i]);
+
+  //move F to D
+  for (i=layer; i<9; i+=3) *(state[5].AState[i]) = *(state[2].AState[i]);
+
+  //move U to F
+  for (i=layer; i<9; i+=3) *(state[2].AState[i]) = buffer[i];
+
+
+  char rBuffer[9];
+  switch (layer) {
+    case 0:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[1].CState[i]);
+      for (i=0; i<9; i++) *(state[1].AState[i]) = rBuffer[i];
+      break;
+    case 2:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[3].CState[i]);
+      for (i=0; i<9; i++) *(state[3].AState[i]) = rBuffer[i];
+      break;
+  }
+}
+
+void cube::Ri() {
+  ivSlice(2);
+  return;
+}
+
+void cube::ri() {
+  ivSlice(2);
+  ivSlice(1);
+  return;
+}
+
+void cube::L() {
+  ivSlice(0);
+  return;
+}
+
+void cube::l() {
+  ivSlice(0);
+  ivSlice(1);
+  return;
+}
+
+void cube::M() {
+  ivSlice(1);
+  return;
+}
