@@ -360,3 +360,63 @@ void cube::S() {
   mSlice(1);
   return;
 }
+
+void cube::imSlice(char layer) {
+  int i;
+  char buffer[9];
+
+  //drop U into the buffer
+  for (i=layer; i<9; i+=3) buffer[i] = *(state[0].DState[i]);
+
+  //move R to U
+  for (i=layer; i<9; i+=3) *(state[0].DState[i]) = *(state[3].CState[i]);
+
+  //move D to R
+  for (i=layer; i<9; i+=3) *(state[3].CState[i]) = *(state[5].BState[i]);
+
+  //move L to D
+  for (i=layer; i<9; i+=3) *(state[5].BState[i]) = *(state[1].AState[i]);
+
+  //move U to R
+  for (i=layer; i<9; i+=3) *(state[1].AState[i]) = buffer[i];
+
+
+  char rBuffer[9];
+  switch (layer) {
+    case 0:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[4].BState[i]);
+      for (i=0; i<9; i++) *(state[4].AState[i]) = rBuffer[i];
+      break;
+    case 2:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[2].DState[i]);
+      for (i=0; i<9; i++) *(state[2].AState[i]) = rBuffer[i];
+      break;
+  }
+}
+
+void cube::Fi() {
+  imSlice(2);
+  return;
+}
+
+void cube::fi() {
+  imSlice(2);
+  imSlice(1);
+  return;
+}
+
+void cube::B() {
+  imSlice(0);
+  return;
+}
+
+void cube::b() {
+  imSlice(0);
+  imSlice(1);
+  return;
+}
+
+void cube::Si() {
+  imSlice(1);
+  return;
+}

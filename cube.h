@@ -61,6 +61,7 @@ class cube {
   void hSlice(char layer);
   void ihSlice(char layer);
   void mSlice(char layer);
+  void imSlice(char layer);
 
   public:
     //constructor
@@ -91,10 +92,10 @@ class cube {
     //F&B
     void F();
     void f();
-    //void Fi();
-    //void fi();
-    //void B();
-    //void b();
+    void Fi();
+    void fi();
+    void B();
+    void b();
     void Bi();
     void bi();
 
@@ -104,7 +105,7 @@ class cube {
     void E();
     void Ei();
     void S();
-    //void Si();
+    void Si();
 
     //rotations
 /*  void Y();
