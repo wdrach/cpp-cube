@@ -58,6 +58,9 @@ class cube {
   //slices, which are helpers for moves
   void vSlice(char layer);
   void ivSlice(char layer);
+  void hSlice(char layer);
+  void ihSlice(char layer);
+  void mSlice(char layer);
 
   public:
     //constructor
@@ -76,31 +79,31 @@ class cube {
     void li();
     
     //U&D
-/*  void U();
+    void U();
     void u();
     void Ui();
     void ui();
     void D();
     void d();
     void Di();
-    void di();*/
+    void di();
 
     //F&B
-/*  void F();
+    void F();
     void f();
-    void Fi();
-    void fi();
-    void B();
-    void b();
+    //void Fi();
+    //void fi();
+    //void B();
+    //void b();
     void Bi();
-    void bi();*/
+    void bi();
 
     //M slices
     void M();
     void Mi();
-    //void E();
-    //void Ei();
-    //void S();
+    void E();
+    void Ei();
+    void S();
     //void Si();
 
     //rotations

@@ -36,7 +36,7 @@ void cube::printCube() {
   cout << endl;
 
   for (i=0; i<3; i++) {
-    for (j=0; j<3; j++) printColor(*(state[1].DState[j + 3*i]));
+    for (j=0; j<3; j++) printColor(*(state[1].BState[j + 3*i]));
     cout << " ";
     for (j=0; j<3; j++) printColor(*(state[0].AState[j + 3*i]));
     cout << " ";
@@ -83,7 +83,7 @@ void cube::vSlice(char layer) {
   char rBuffer[9];
   switch (layer) {
     case 0:
-      for (i=0; i<9; i++) rBuffer[i] = *(state[1].BState[i]);
+      for (i=0; i<9; i++) rBuffer[i] = *(state[1].DState[i]);
       for (i=0; i<9; i++) *(state[1].AState[i]) = rBuffer[i];
       break;
     case 2:
@@ -143,11 +143,11 @@ void cube::ivSlice(char layer) {
   char rBuffer[9];
   switch (layer) {
     case 0:
-      for (i=0; i<9; i++) rBuffer[i] = *(state[1].CState[i]);
+      for (i=0; i<9; i++) rBuffer[i] = *(state[1].BState[i]);
       for (i=0; i<9; i++) *(state[1].AState[i]) = rBuffer[i];
       break;
     case 2:
-      for (i=0; i<9; i++) rBuffer[i] = *(state[3].CState[i]);
+      for (i=0; i<9; i++) rBuffer[i] = *(state[3].DState[i]);
       for (i=0; i<9; i++) *(state[3].AState[i]) = rBuffer[i];
       break;
   }
@@ -177,5 +177,186 @@ void cube::l() {
 
 void cube::M() {
   ivSlice(1);
+  return;
+}
+
+void cube::hSlice(char layer) {
+  int i;
+  char buffer[9];
+
+  //drop F into the buffer
+  for (i=layer; i<9; i+=3) buffer[i] = *(state[2].BState[i]);
+
+  //move R to F
+  for (i=layer; i<9; i+=3) *(state[2].BState[i]) = *(state[3].BState[i]);
+
+  //move B to R
+  for (i=layer; i<9; i+=3) *(state[3].BState[i]) = *(state[4].BState[i]);
+
+  //move L to B
+  for (i=layer; i<9; i+=3) *(state[4].BState[i]) = *(state[1].BState[i]);
+
+  //move F to L
+  for (i=layer; i<9; i+=3) *(state[1].BState[i]) = buffer[i];
+
+
+  char rBuffer[9];
+  switch (layer) {
+    case 0:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[5].DState[i]);
+      for (i=0; i<9; i++) *(state[5].AState[i]) = rBuffer[i];
+      break;
+    case 2:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[0].BState[i]);
+      for (i=0; i<9; i++) *(state[0].AState[i]) = rBuffer[i];
+      break;
+  }
+}
+
+void cube::U() {
+  hSlice(2);
+  return;
+}
+
+void cube::u() {
+  hSlice(2);
+  hSlice(1);
+  return;
+}
+
+void cube::Di() {
+  hSlice(0);
+  return;
+}
+
+void cube::di() {
+  hSlice(0);
+  hSlice(1);
+  return;
+}
+
+void cube::Ei() {
+  hSlice(1);
+  return;
+}
+
+
+void cube::ihSlice(char layer) {
+  int i;
+  char buffer[9];
+
+  //drop F into the buffer
+  for (i=layer; i<9; i+=3) buffer[i] = *(state[2].BState[i]);
+
+  //move L to F
+  for (i=layer; i<9; i+=3) *(state[2].BState[i]) = *(state[1].BState[i]);
+
+  //move B to L
+  for (i=layer; i<9; i+=3) *(state[1].BState[i]) = *(state[4].BState[i]);
+
+  //move R to B
+  for (i=layer; i<9; i+=3) *(state[4].BState[i]) = *(state[3].BState[i]);
+
+  //move F to R
+  for (i=layer; i<9; i+=3) *(state[3].BState[i]) = buffer[i];
+
+
+  char rBuffer[9];
+  switch (layer) {
+    case 0:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[5].BState[i]);
+      for (i=0; i<9; i++) *(state[5].AState[i]) = rBuffer[i];
+      break;
+    case 2:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[0].DState[i]);
+      for (i=0; i<9; i++) *(state[0].AState[i]) = rBuffer[i];
+      break;
+  }
+}
+
+void cube::Ui() {
+  ihSlice(2);
+  return;
+}
+
+void cube::ui() {
+  ihSlice(2);
+  ihSlice(1);
+  return;
+}
+
+void cube::D() {
+  ihSlice(0);
+  return;
+}
+
+void cube::d() {
+  ihSlice(0);
+  ihSlice(1);
+  return;
+}
+
+void cube::E() {
+  ihSlice(1);
+  return;
+}
+
+void cube::mSlice(char layer) {
+  int i;
+  char buffer[9];
+
+  //drop U into the buffer
+  for (i=layer; i<9; i+=3) buffer[i] = *(state[0].DState[i]);
+
+  //move L to U
+  for (i=layer; i<9; i+=3) *(state[0].DState[i]) = *(state[1].AState[i]);
+
+  //move D to L
+  for (i=layer; i<9; i+=3) *(state[1].AState[i]) = *(state[5].BState[i]);
+
+  //move R to D
+  for (i=layer; i<9; i+=3) *(state[5].BState[i]) = *(state[3].CState[i]);
+
+  //move U to R
+  for (i=layer; i<9; i+=3) *(state[3].CState[i]) = buffer[i];
+
+
+  char rBuffer[9];
+  switch (layer) {
+    case 0:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[4].DState[i]);
+      for (i=0; i<9; i++) *(state[4].AState[i]) = rBuffer[i];
+      break;
+    case 2:
+      for (i=0; i<9; i++) rBuffer[i] = *(state[2].BState[i]);
+      for (i=0; i<9; i++) *(state[2].AState[i]) = rBuffer[i];
+      break;
+  }
+}
+
+void cube::F() {
+  mSlice(2);
+  return;
+}
+
+void cube::f() {
+  mSlice(2);
+  mSlice(1);
+  return;
+}
+
+void cube::Bi() {
+  mSlice(0);
+  return;
+}
+
+void cube::bi() {
+  mSlice(0);
+  mSlice(1);
+  return;
+}
+
+void cube::S() {
+  mSlice(1);
   return;
 }
