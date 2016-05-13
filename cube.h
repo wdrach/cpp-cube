@@ -50,27 +50,22 @@
 
 class cube {
   //the user should not be able to directly influence the state
-  face state[6] = {face(NULL, '0'), face(NULL, '1'), face(NULL, '2'), face(NULL, '3'), face(NULL, '4'), face(NULL, '5')};
+  char state[54];
 
   //internal helpers
   void printColor(char c);
 
-  //slices, which are helpers for moves
-  void vSlice(char layer);
-  void ivSlice(char layer);
-  void hSlice(char layer);
-  void ihSlice(char layer);
-  void mSlice(char layer);
-  void imSlice(char layer);
+  //our mapper
+  void mapper(char map[54]);
 
   public:
     //constructor
-    cube(face start_state[6] = NULL);
+    cube(start_state[54] = NULL);
     //int* getState();
     void printCube();
 
     //R&L
-    void R();
+    /*void R();
     void r();
     void Ri();
     void ri();
@@ -105,7 +100,7 @@ class cube {
     void E();
     void Ei();
     void S();
-    void Si();
+    void Si();*/
 
     //rotations
 /*  void Y();
@@ -114,6 +109,4 @@ class cube {
     void Xi();
     void Z();
     void Zi();*/
-
-    //helpers
 };
